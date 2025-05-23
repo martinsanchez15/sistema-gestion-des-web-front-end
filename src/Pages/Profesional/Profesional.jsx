@@ -1,61 +1,102 @@
-import React from 'react';
-import { useAuth } from '../../Context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-// import "../styles/Profesional.css";
-
+import React, { useState } from 'react';
+import {
+  User, Calendar, Clock, Users, LogOut, Menu, X, Bell, Settings
+} from 'lucide-react';
+import Header from '../../Componentes/Header';
+import Footer from '../../Componentes/Footer';
+import '../../styles/Profesional.css';
 function Profesional() {
-  const { usuario, logout } = useAuth();
-  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const usuario = {
+    nombre: "Dra. María González",
+    rol: "Psicóloga Clínica",
+    avatar: "MG"
   };
 
+  const navegarA = (ruta) => {
+    console.log(`Navegando a: ${ruta}`);
+  };
+
+  const handleLogout = () => {
+    console.log('Cerrando sesión...');
+  };
+
+  const menuItems = [
+    {
+      icon: Calendar,
+      title: "Crear Disponibilidad",
+      description: "Gestioná tus horarios disponibles.",
+      color: "purple",
+      action: () => navegarA('/profesional/disponibilidad')
+    },
+    {
+      icon: Clock,
+      title: "Turnos Asignados",
+      description: "Revisá tus citas programadas.",
+      color: "blue",
+      action: () => navegarA('/profesional/turnos')
+    },
+    {
+      icon: Users,
+      title: "Pacientes",
+      description: "Administrá tu lista de pacientes.",
+      color: "green",
+      action: () => navegarA('/profesional/pacientes')
+    }
+  ];
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-        <header className="mb-6">
-          <h2 className="text-2xl font-semibold text-purple-700 text-center">
-            Sistema de Turnos - Profesional
-          </h2>
-        </header>
-
-        <h1 className="text-3xl font-bold mb-2 text-center text-gray-800">
-          Bienvenido/a, {usuario?.nombre}
+    <div className="profesional-container">
+      <Header />
+      <div className="section-header">
+        <h1>
+          Bienvenida, <span>{usuario.nombre.split(" ")[1]}</span>
         </h1>
-        <p className="text-center text-gray-600 mb-8">Rol: {usuario?.rol}</p>
+        <p>{usuario.rol}</p>
+      </div>
 
-        <div className="flex flex-col gap-4">
-          <button
-            onClick={() => navigate('/profesional/disponibilidad')}
-            className="bg-purple-600 hover:bg-purple-700 transition-colors text-white px-4 py-3 rounded shadow"
-          >
-            Crear Disponibilidad
-          </button>
-
-          <button
-            onClick={() => navigate('/profesional/turnos')}
-            className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-3 rounded shadow"
-          >
-            Ver Turnos Asignados
-          </button>
-
-          <button
-            onClick={() => navigate('/profesional/pacientes')}
-            className="bg-green-500 hover:bg-green-600 transition-colors text-white px-4 py-3 rounded shadow"
-          >
-            Ver Pacientes
-          </button>
-
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 transition-colors text-white px-4 py-3 rounded shadow"
-          >
-            Cerrar Sesión
-          </button>
+      <div className="quick-stats">
+        <div className="card stat">
+          <Clock className="icon" />
+          <div>
+            <h3>Turnos Hoy</h3>
+            <p>8</p>
+          </div>
+        </div>
+        <div className="card stat">
+          <Users className="icon" />
+          <div>
+            <h3>Pacientes Activos</h3>
+            <p>24</p>
+          </div>
+        </div>
+        <div className="card stat">
+          <Calendar className="icon" />
+          <div>
+            <h3>Disponibilidad</h3>
+            <p>72%</p>
+          </div>
         </div>
       </div>
+
+      <div className="acciones">
+        {menuItems.map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <div key={index} className={`card accion ${item.color}`} onClick={item.action}>
+              <div className="icon-wrapper">
+                <Icon className="icon" />
+              </div>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              <span>Acceder →</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <Footer />
     </div>
   );
 }

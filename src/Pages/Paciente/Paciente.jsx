@@ -1,41 +1,55 @@
 import React from 'react';
 import { useAuth } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Calendar, FileText, Stethoscope, User, Heart, Activity } from 'lucide-react';
+import Header from '../../Componentes/Header';
+import Footer from '../../Componentes/Footer';
+import '../../styles/Paciente.css'; // creá este archivo simple
 
 function Paciente() {
-  const { usuario, logout } = useAuth();
+  const { usuario } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+  const acciones = [
+    { titulo: 'Mis Turnos', icon: Calendar, ruta: '/paciente/turnos' },
+    { titulo: 'Historial', icon: FileText, ruta: '/paciente/historial' },
+    { titulo: 'Solicitar Turno', icon: Stethoscope, ruta: '/paciente/solicitar-turno' },
+    { titulo: 'Perfil', icon: User, ruta: '/paciente/perfil' }
+  ];
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-4">Bienvenido/a, {usuario?.nombre}</h1>
-      <p className="text-lg mb-6">Rol: {usuario?.rol}</p>
+    <div className="paciente">
+      <Header />
 
-      <div className="flex flex-col gap-4 max-w-sm">
-        <button
-          onClick={() => navigate('/paciente/turnos')}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Ver Turnos
-        </button>
-        <button
-          onClick={() => navigate('/paciente/historial')}
-          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-        >
-          Ver Historial
-        </button>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-        >
-          Cerrar Sesión
-        </button>
-      </div>
+      <main className="paciente-main">
+        <section className="bienvenida">
+          <h1>Hola, {usuario?.nombre} 👋</h1>
+          <p>Bienvenido a tu espacio de salud</p>
+          <Heart className="icono-grande" />
+        </section>
+
+        <section className="acciones">
+          <h2>Acciones rápidas</h2>
+          <div className="acciones-grid">
+            {acciones.map((a, i) => (
+              <div key={i} className="accion" onClick={() => navigate(a.ruta)}>
+                <a.icon size={32} />
+                <span>{a.titulo}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="consejo">
+          <Activity size={28} />
+          <div>
+            <h3>Consejo del día</h3>
+            <p>Caminar 30 minutos al día puede mejorar tu salud 💪</p>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
     </div>
   );
 }

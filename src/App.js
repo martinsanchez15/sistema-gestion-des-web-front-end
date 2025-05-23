@@ -6,7 +6,8 @@ import Paciente from './Pages/Paciente/Paciente';
  import Profesional from './Pages/Profesional/Profesional';
 import Turnos from './Pages/Turnos/Turnos';
 import CrearDisponibilidad from './Pages/Profesional/CrearDisponibilidad';
-
+import Header from './Componentes/Header';
+import Footer from './Componentes/Footer';
 function App() {
   return (
     <Router>
@@ -14,8 +15,9 @@ function App() {
         <Routes>
           
           <Route path="/" element={<Registro />} />
+          <Route path="/footer" element={<Footer />} />
           <Route path="/login" element={<Login/>} />
-          
+           <Route path="/header" element={<Header/>} />
           <Route path="/paciente" element={<Paciente/>} />
           <Route path="/profesional" element={<Profesional/>} /> 
           <Route path="/paciente/turnos" element={<Turnos/>} /> 
