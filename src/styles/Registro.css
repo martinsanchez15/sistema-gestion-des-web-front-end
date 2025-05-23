@@ -1,0 +1,79 @@
+.registro-container {
+  background-image: url('/public/CM.jpg');
+ background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 2rem;/* para posicionar posibles elementos encima */
+}
+
+.registro-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.registro-container form div {
+  margin-bottom: 1rem;
+}
+
+.registro-container label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.registro-container input,
+.registro-container select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.registro-container button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.registro-container button:hover {
+  background-color: #0056b3;
+}
+.text-center-link {
+  text-align: center;
+  margin-top: 1rem; /* un espacio arriba para que no quede pegado */
+  font-size: 0.9rem;
+}
+
+.text-center-link a {
+  color: #007bff;  /* color azul o el que quieras */
+  text-decoration: none;
+}
+
+.text-center-link a:hover {
+  text-decoration: underline;
+}
+
+.form-box {
+  background-color: rgba(255, 255, 255, 0.9); /* blanco semitransparente */
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  z-index: 1;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}

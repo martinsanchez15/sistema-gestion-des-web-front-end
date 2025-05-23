@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Registro from './Auth/Registro';
+import Login from './Auth/Login';
+import Paciente from './Pages/Paciente/Paciente';
+ import Profesional from './Pages/Profesional/Profesional';
+import Turnos from './Pages/Turnos/Turnos';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          
+          <Route path="/" element={<Registro />} />
+          <Route path="/login" element={<Login/>} />
+          
+          <Route path="/paciente" element={<Paciente/>} />
+          <Route path="/profesional" element={<Profesional/>} /> 
+          <Route path="/paciente/turnos" element={<Turnos/>} /> 
+          {/* Acá más adelante podés agregar otras rutas como /login, /panel, etc. */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
