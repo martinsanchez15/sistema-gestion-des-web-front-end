@@ -1,0 +1,54 @@
+.paciente-main {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.bienvenida {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.icono-grande {
+  color: crimson;
+  margin-top: 1rem;
+}
+
+.acciones h2 {
+  margin-bottom: 1rem;
+}
+
+.acciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.accion {
+  background: #f0f4f8;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.accion:hover {
+  background: #d9e8f1;
+}
+
+.accion span {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.consejo {
+  display: flex;
+  gap: 1rem;
+  background: #e6ffe6;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+  align-items: center;
+}
