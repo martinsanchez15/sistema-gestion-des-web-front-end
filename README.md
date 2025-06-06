@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# 🖥️ Turno Médico Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este es el frontend del sistema de gestión de turnos médicos desarrollado con **React**. Forma parte del proyecto final de la Tecnicatura en Desarrollo y Calidad de Software (UNSTA).
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## ✅ Funcionalidades Implementadas
 
-### `npm start`
+- Registro de **pacientes** y **profesionales** con conexión al backend
+- Inicio de sesión con validación contra API y almacenamiento de token JWT
+- Navegación protegida según el **rol del usuario**
+- Vista separada para cada tipo de usuario: `/paciente` y `/profesional`
+- Almacenamiento de token y datos de sesión en `localStorage`
+- Lógica de autenticación y contexto de usuario (`AuthContext`)
+- Estilos personalizados con CSS
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ Tecnologías
 
-### `npm test`
+- React (Vite)
+- React Router DOM
+- Context API
+- Fetch API
+- CSS personalizado
+- GitHub para control de versiones
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 📌 Próximas tareas a implementar
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🧍 Vista Paciente
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- [ ] Mostrar lista de turnos del paciente autenticado
+- [ ] Botón para cancelar un turno
+- [ ] Visualizar datos del perfil del paciente
+- [ ] Mostrar mensaje de bienvenida con su nombre
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 👨‍⚕️ Vista Profesional
 
-### `npm run eject`
+- [ ] Listar todos los turnos asignados al profesional
+- [ ] Filtrar turnos por fecha
+- [ ] Visualizar datos de contacto del paciente en cada turno
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🔒 Autenticación y Sesión
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [ ] Agregar botón de **Cerrar sesión**
+- [ ] Redirigir automáticamente si el usuario está logueado
+- [ ] Proteger rutas para evitar acceso directo sin token
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🎨 UI y Experiencia
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [ ] Mejorar diseño responsive para dispositivos móviles
+- [ ] Validación visual de errores en formularios (email inválido, contraseña corta, etc.)
+- [ ] Indicadores de carga al enviar formularios

@@ -6,7 +6,7 @@ import '../styles/Registro.css';
 function Login() {
   const [formData, setFormData] = useState({
     email: '',
-    contraseña: '',
+    password: '', // ✅ Usar "password" (sin tilde)
   });
 
   const { login } = useAuth();
@@ -19,31 +19,47 @@ function Login() {
     }));
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await fetch(`http://localhost:4000/usuarios?email=${formData.email}&contraseña=${formData.contraseña}`);
-    const data = await response.json();
+    const API_URL = process.env.REACT_APP_API_URL;
+    console.log("Iniciando sesión contra:", API_URL);
 
-    if (data.length > 0) {
-      const usuario = data[0];
-      login(usuario);
-      localStorage.setItem('usuarioActual', JSON.stringify(usuario));
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password // ✅ Corregido
+        })
+      });
 
-      if (usuario.rol === 'profesional') {
+      if (!response.ok) {
+        const mensaje = await response.text();
+        throw new Error(mensaje || 'Login inválido');
+      }
+
+      const data = await response.json();
+
+      // Guardar token y usuario
+      login(data);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('usuario', JSON.stringify(data.usuario));
+
+      if (data.usuario.rol === 'profesional') {
         navigate('/profesional');
       } else {
         navigate('/paciente');
       }
-    } else {
-      alert('Email o contraseña incorrectos');
+
+    } catch (error) {
+      console.error('Error en el login:', error);
+      alert('❌ Email o contraseña incorrectos. ' + (error.message || ''));
     }
-  } catch (error) {
-    console.error('Error en el login:', error);
-    alert('Ocurrió un error. Intentalo de nuevo más tarde.');
-  }
-};
+  };
 
   return (
     <div className="registro-container">
@@ -64,8 +80,8 @@ function Login() {
             <label>Contraseña:</label>
             <input
               type="password"
-              name="contraseña"
-              value={formData.contraseña}
+              name="password" // ✅ Corregido
+              value={formData.password}
               onChange={handleChange}
               required
             />
