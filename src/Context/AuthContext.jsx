@@ -1,33 +1,52 @@
-// AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
+  const [token, setToken] = useState(null);
 
-  // Cargar usuario desde localStorage al iniciar
   useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("usuarioActual");
-    if (usuarioGuardado) {
-      setUsuario(JSON.parse(usuarioGuardado));
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      const decoded = jwtDecode(storedToken);
+      const usuarioGuardado = {
+        id: decoded.id,
+        email: decoded.email,
+        nombre: decoded.nombre,
+        rol: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role
+      };
+      setUsuario(usuarioGuardado);
+      setToken(storedToken);
     }
   }, []);
 
-  // Función para login
-  const login = (userData) => {
-    setUsuario(userData);
-    localStorage.setItem("usuarioActual", JSON.stringify(userData));
+  const login = ({ token }) => {
+    const decoded = jwtDecode(token);
+    const userInfo = {
+      id: decoded.id,
+      email: decoded.email,
+      nombre: decoded.nombre,
+      rol: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role
+    };
+
+    setUsuario(userInfo);
+    setToken(token);
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("usuario", JSON.stringify(userInfo));
   };
 
-  // Función para logout
   const logout = () => {
     setUsuario(null);
-    localStorage.removeItem("usuarioActual");
+    setToken(null);
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("token");
   };
 
   return (
-    <AuthContext.Provider value={{ usuario, login, logout }}>
+    <AuthContext.Provider value={{ usuario, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

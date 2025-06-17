@@ -1,6 +1,5 @@
 // Header.jsx
 import { LogOut, Menu, X, User, Stethoscope, Calendar } from 'lucide-react';
-import { useAuth } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import '../styles/Header.css';
@@ -18,10 +17,24 @@ const rutasPorRol = {
 };
 
 const Header = ({ title = 'Sistema de Turnos Médicos' }) => {
-  const { usuario, logout } = useAuth();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
+  const nombre = usuario.nombre || "Usuario";
+  const rol = usuario.rol || "";
+
+  const opciones = rutasPorRol[rol] || [];
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
+    navigate('/login');
+    setIsMenuOpen(false);
+  };
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,28 +44,16 @@ const Header = ({ title = 'Sistema de Turnos Médicos' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-    setIsMenuOpen(false);
-  };
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const opciones = rutasPorRol[usuario?.rol] || [];
-
-  const getRolIcon = (rol) => {
-    return rol === 'profesional' ? Stethoscope : User;
-  };
-
-  const RolIcon = getRolIcon(usuario?.rol);
+  const getRolIcon = (rol) => rol === 'profesional' ? Stethoscope : User;
+  const RolIcon = getRolIcon(rol);
 
   return (
     <>
       <header className={`header ${isScrolled ? 'header--scrolled' : ''}`}>
         <div className="header__container">
           <div className="header__content">
-            
-            {/* Logo y título */}
+
+            {/* Logo */}
             <div className="header__brand" onClick={() => navigate('/')}>
               <div className="header__logo">
                 <Stethoscope size={24} />
@@ -60,33 +61,27 @@ const Header = ({ title = 'Sistema de Turnos Médicos' }) => {
               <h1 className="header__title">{title}</h1>
             </div>
 
-            {/* Información del usuario (Desktop) */}
+            {/* Desktop */}
             <div className="header__desktop">
               <div className="header__user-info">
                 <div className="header__user-avatar">
                   <RolIcon size={16} />
                 </div>
                 <div className="header__user-details">
-                  <div className="header__user-name">{usuario?.nombre}</div>
+                  <div className="header__user-name">{nombre}</div>
                   <div className="header__user-role">
-                    {usuario?.rol === 'profesional' ? 'Profesional' : 'Paciente'}
+                    {rol === 'profesional' ? `Dr. ${nombre}` : 'Paciente'}
                   </div>
                 </div>
               </div>
 
-              {/* Navegación Desktop */}
               <nav className="header__nav">
                 {opciones.map(({ texto, ruta, icon: Icon }) => (
-                  <button
-                    key={ruta}
-                    onClick={() => navigate(ruta)}
-                    className="header__nav-item"
-                  >
+                  <button key={ruta} onClick={() => navigate(ruta)} className="header__nav-item">
                     <Icon size={18} />
                     <span>{texto}</span>
                   </button>
                 ))}
-                
                 <button onClick={handleLogout} className="header__nav-item header__nav-item--logout">
                   <LogOut size={18} />
                   <span>Salir</span>
@@ -94,7 +89,7 @@ const Header = ({ title = 'Sistema de Turnos Médicos' }) => {
               </nav>
             </div>
 
-            {/* Botón menú móvil */}
+            {/* Botón mobile */}
             <button onClick={toggleMenu} className="header__mobile-toggle">
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -104,21 +99,18 @@ const Header = ({ title = 'Sistema de Turnos Médicos' }) => {
         {/* Menú móvil */}
         <div className={`header__mobile-menu ${isMenuOpen ? 'header__mobile-menu--open' : ''}`}>
           <div className="header__mobile-content">
-            
-            {/* Info usuario móvil */}
             <div className="header__mobile-user">
               <div className="header__mobile-avatar">
                 <RolIcon size={20} />
               </div>
               <div className="header__mobile-user-details">
-                <div className="header__mobile-user-name">{usuario?.nombre}</div>
+                <div className="header__mobile-user-name">{nombre}</div>
                 <div className="header__mobile-user-role">
-                  {usuario?.rol === 'profesional' ? 'Profesional' : 'Paciente'}
+                  {rol === 'profesional' ? `Dr. ${nombre}` : 'Paciente'}
                 </div>
               </div>
             </div>
 
-            {/* Navegación móvil */}
             {opciones.map(({ texto, ruta, icon: Icon }) => (
               <button
                 key={ruta}
@@ -132,7 +124,7 @@ const Header = ({ title = 'Sistema de Turnos Médicos' }) => {
                 <span>{texto}</span>
               </button>
             ))}
-            
+
             <button onClick={handleLogout} className="header__mobile-nav-item header__mobile-nav-item--logout">
               <LogOut size={20} />
               <span>Cerrar Sesión</span>
@@ -140,8 +132,7 @@ const Header = ({ title = 'Sistema de Turnos Médicos' }) => {
           </div>
         </div>
       </header>
-      
-      {/* Espaciador */}
+
       <div className="header__spacer"></div>
     </>
   );

@@ -14,11 +14,11 @@ const getAuthHeaders = () => {
 // ==========================
 
 // Login (paciente o profesional)
-export const loginUsuario = async (email, contraseña) => {
+export const loginUsuario = async (email, password) => {
   const res = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, contraseña }),
+    body: JSON.stringify({ email, password }), // ← Usamos 'password'
   });
   if (!res.ok) throw new Error("Login fallido");
   return res.json();
@@ -28,7 +28,6 @@ export const loginUsuario = async (email, contraseña) => {
 // 🧍 PACIENTES
 // ==========================
 
-// Registrar Paciente
 export const registrarPaciente = async (paciente) => {
   const res = await fetch(`${API_URL}/api/paciente`, {
     method: "POST",
@@ -51,9 +50,8 @@ export const obtenerPacientes = async () => {
 // 👨‍⚕️ PROFESIONALES
 // ==========================
 
-// Registrar Profesional
 export const registrarProfesional = async (profesional) => {
-  const res = await fetch(`${API_URL}/api/profecional`, {
+  const res = await fetch(`${API_URL}/api/profesional`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(profesional),
@@ -63,7 +61,7 @@ export const registrarProfesional = async (profesional) => {
 };
 
 export const obtenerProfesionales = async () => {
-  const res = await fetch(`${API_URL}/api/profecional`, {
+  const res = await fetch(`${API_URL}/api/profesional`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Error al obtener profesionales");

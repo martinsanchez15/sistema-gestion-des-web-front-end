@@ -1,14 +1,15 @@
 import React from 'react';
-import { useAuth } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, FileText, Stethoscope, User, Heart, Activity } from 'lucide-react';
 import Header from '../../Componentes/Header';
 import Footer from '../../Componentes/Footer';
-import '../../styles/Paciente.css'; // creá este archivo simple
+import '../../styles/Paciente.css';
 
 function Paciente() {
-  const { usuario } = useAuth();
   const navigate = useNavigate();
+
+  const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
+  const nombre = usuario?.nombre || "Paciente";
 
   const acciones = [
     { titulo: 'Mis Turnos', icon: Calendar, ruta: '/paciente/turnos' },
@@ -23,7 +24,8 @@ function Paciente() {
 
       <main className="paciente-main">
         <section className="bienvenida">
-          <h1>Hola, {usuario?.nombre} 👋</h1>
+          <h1>Hola, {nombre} 👋</h1>
+          {/* Si preferís esto: <h1>Bienvenido/a, {nombre}</h1> */}
           <p>Bienvenido a tu espacio de salud</p>
           <Heart className="icono-grande" />
         </section>

@@ -5,14 +5,14 @@ import {
 import Header from '../../Componentes/Header';
 import Footer from '../../Componentes/Footer';
 import '../../styles/Profesional.css';
+
 function Profesional() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const usuario = {
-    nombre: "Dra. María González",
-    rol: "Psicóloga Clínica",
-    avatar: "MG"
-  };
+  // ✅ Obtener usuario desde localStorage
+  const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
+  const nombre = usuario?.rol === "profesional" ? `Dr. ${usuario.nombre}` : usuario.nombre || "Profesional";
+  const rol = usuario?.rol || "";
 
   const navegarA = (ruta) => {
     console.log(`Navegando a: ${ruta}`);
@@ -20,6 +20,9 @@ function Profesional() {
 
   const handleLogout = () => {
     console.log('Cerrando sesión...');
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+    window.location.href = '/';
   };
 
   const menuItems = [
@@ -49,11 +52,12 @@ function Profesional() {
   return (
     <div className="profesional-container">
       <Header />
+
       <div className="section-header">
         <h1>
-          Bienvenida, <span>{usuario.nombre.split(" ")[1]}</span>
+          Bienvenido/a, <span>{nombre}</span>
         </h1>
-        <p>{usuario.rol}</p>
+        <p>{rol.charAt(0).toUpperCase() + rol.slice(1)}</p>
       </div>
 
       <div className="quick-stats">

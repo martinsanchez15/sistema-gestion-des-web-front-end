@@ -6,7 +6,7 @@ import '../styles/Registro.css';
 function Login() {
   const [formData, setFormData] = useState({
     email: '',
-    password: '', // ✅ Usar "password" (sin tilde)
+    password: ''
   });
 
   const { login } = useAuth();
@@ -23,7 +23,6 @@ function Login() {
     e.preventDefault();
 
     const API_URL = process.env.REACT_APP_API_URL;
-    console.log("Iniciando sesión contra:", API_URL);
 
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
@@ -31,10 +30,7 @@ function Login() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password // ✅ Corregido
-        })
+        body: JSON.stringify(formData)
       });
 
       if (!response.ok) {
@@ -44,12 +40,14 @@ function Login() {
 
       const data = await response.json();
 
-      // Guardar token y usuario
-      login(data);
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('usuario', JSON.stringify(data.usuario));
+      // Guardar token y extraer usuario desde JWT
+      login({ token: data.token });
 
-      if (data.usuario.rol === 'profesional') {
+      // ✅ Detectar rol usando el nombre largo del claim
+      const decoded = JSON.parse(atob(data.token.split('.')[1]));
+      const rol = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+      if (rol === 'profesional') {
         navigate('/profesional');
       } else {
         navigate('/paciente');
@@ -80,7 +78,7 @@ function Login() {
             <label>Contraseña:</label>
             <input
               type="password"
-              name="password" // ✅ Corregido
+              name="password"
               value={formData.password}
               onChange={handleChange}
               required

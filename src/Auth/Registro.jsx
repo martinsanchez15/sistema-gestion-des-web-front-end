@@ -5,12 +5,13 @@ import "../styles/Registro.css";
 
 function Registro() {
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    dni: '',
-    email: '',
-    password: '',
-    rol: 'paciente',
+    Nombre: '',
+    Apellido: '',
+    DNI: '',
+    Email: '',
+    Password: '',
+    Rol: 'paciente',
+    Especialidad: '' // Solo se usa si elige profesional
   });
 
   const navigate = useNavigate();
@@ -27,10 +28,25 @@ function Registro() {
     console.log("Enviando datos al backend:", formData);
 
     try {
-      if (formData.rol === 'paciente') {
-        await registrarPaciente(formData);
+      if (formData.Rol === 'paciente') {
+        const paciente = {
+          Nombre: formData.Nombre,
+          Apellido: formData.Apellido,
+          DNI: formData.DNI,
+          Email: formData.Email,
+          Password: formData.Password
+        };
+        await registrarPaciente(paciente);
       } else {
-        await registrarProfesional(formData);
+        const profesional = {
+          Nombre: formData.Nombre,
+          Apellido: formData.Apellido,
+          DNI: formData.DNI,
+          Email: formData.Email,
+          Password: formData.Password,
+          Especialidad: formData.Especialidad
+        };
+        await registrarProfesional(profesional);
       }
 
       alert("Usuario registrado correctamente");
@@ -48,31 +64,39 @@ function Registro() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Nombre:</label>
-            <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
+            <input type="text" name="Nombre" value={formData.Nombre} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label>Apellido:</label>
-            <input type="text" name="apellido" value={formData.apellido} onChange={handleChange} required />
+            <input type="text" name="Apellido" value={formData.Apellido} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label>DNI:</label>
-            <input type="text" name="dni" value={formData.dni} onChange={handleChange} required />
+            <input type="text" name="DNI" value={formData.DNI} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label>Email:</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+            <input type="email" name="Email" value={formData.Email} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label>Contraseña:</label>
-            <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+            <input type="password" name="Password" value={formData.Password} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label>Rol:</label>
-            <select name="rol" value={formData.rol} onChange={handleChange}>
+            <select name="Rol" value={formData.Rol} onChange={handleChange}>
               <option value="paciente">Paciente</option>
               <option value="profesional">Profesional</option>
             </select>
           </div>
+
+          {formData.Rol === "profesional" && (
+            <div className="form-group">
+              <label>Especialidad:</label>
+              <input type="text" name="Especialidad" value={formData.Especialidad} onChange={handleChange} required />
+            </div>
+          )}
+
           <button type="submit">Registrarse</button>
           <p className="text-center-link">
             ¿Ya tenés cuenta? <a href="/login">Iniciá sesión</a>
